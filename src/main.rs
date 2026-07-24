@@ -9,6 +9,8 @@ async fn main() -> anyhow::Result<()> {
     dotenvy::dotenv().ok();
     tracing_subscriber::fmt::init();
 
+    info!("starting server...");
+
     let config = Config::load()?;
     let addr = config.addr.clone();
 
