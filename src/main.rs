@@ -2,7 +2,7 @@ use axum::Router;
 use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;
 use tracing::info;
-use vocab_api::{AppState, config::Config, routes};
+use vocab_api::{AppState, config::Config, loader, routes};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -12,7 +12,9 @@ async fn main() -> anyhow::Result<()> {
     let config = Config::load()?;
     let addr = config.addr.clone();
 
-    let state = AppState::new(config);
+    let vocab = loader::load_vocab(&config.vocab_path)?;
+
+    let state = AppState::new(config, vocab);
 
     let app = Router::new()
         .nest("/api", routes::router())

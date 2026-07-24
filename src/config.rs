@@ -5,6 +5,7 @@ use anyhow::Context;
 #[derive(Debug, Clone)]
 pub struct Config {
     pub addr: SocketAddr,
+    pub vocab_path: String,
 }
 
 impl Config {
@@ -15,6 +16,8 @@ impl Config {
             .parse()
             .context("APP_HOST or APP_PORT is invalid")?;
 
-        Ok(Self { addr })
+        let vocab_path = env::var("VOCAB_PATH").unwrap_or_else(|_| "./words.txt".to_string());
+
+        Ok(Self { addr, vocab_path })
     }
 }
