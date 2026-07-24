@@ -51,8 +51,8 @@ impl Vocab {
     pub fn filter(
         &self,
         first: Option<char>,
-        min_len: Option<usize>,
-        max_len: Option<usize>,
+        min_chars: Option<usize>,
+        max_chars: Option<usize>,
     ) -> Vec<&str> {
         let candidates: Vec<&str> = if let Some(f) = first {
             self.first_idx
@@ -65,8 +65,8 @@ impl Vocab {
 
         candidates
             .into_iter()
-            .filter(|w| min_len.map_or(true, |min| w.len() >= min))
-            .filter(|w| max_len.map_or(true, |max| w.len() <= max))
+            .filter(|w| min_chars.map_or(true, |min| w.chars().count() >= min))
+            .filter(|w| max_chars.map_or(true, |max| w.chars().count() <= max))
             .collect()
     }
 }
